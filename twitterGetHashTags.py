@@ -42,8 +42,10 @@ def getTwitterData():
 
     lastused = last_used_file.read()
     last_used_file.close()
-    params = {"q": "#neveragain since:2018-02-18", "result_type": "recent", "max_id": lastused, "count": "100"}
+    params = {"q": "#neveragain since:2018-02-25", "result_type": "recent", "max_id": lastused, "count": "100"}
     tweets = api.search(**params)
+    if not tweets:
+        t.cancel()
     newData = list(map(lambda t: cleanData(t), tweets))
     finalData = [t for t in newData if t is not None]
     list(map(lambda t: discoveredTweets.append(t), finalData))
