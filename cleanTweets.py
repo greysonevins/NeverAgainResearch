@@ -58,6 +58,7 @@ def cleanTweets():
     with open("usefulTweets.json", "w") as tw:
         json.dump(usefulTweets, tw)
 
+    statesAmounts()
 
 def UTCFixTime(time):
     #from help https://stackoverflow.com/questions/4770297/python-convert-utc-datetime-string-to-local-datetime
@@ -128,13 +129,13 @@ def statesAmounts():
                 valuePast += 1
                 State_Tweets_day3[locationUsed]  = valuePast
     with open("day1Tweets.json", "w") as total:
-        json.dump(State_Tweets_day1)
+        json.dump(State_Tweets_day1, total)
 
     with open("day2Tweets.json", "w") as total:
-        json.dump(State_Tweets_day2)
+        json.dump(State_Tweets_day2, total)
 
     with open("day3Tweets.json", "w") as total:
-        json.dump(State_Tweets_day3)
+        json.dump(State_Tweets_day3, total)
 
 
 cleanTweets()
