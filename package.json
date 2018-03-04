@@ -1,20 +1,23 @@
 {
-  "name": "greyson",
+  "name": "Nevins-Archer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "browser-sync start -s -f index.html src --no-ui --no-notify"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greysonevins"
+  },
+  "keywords": [],
+  "author": "Ben Clinkinbeard <ben.clinkinbeard@gmail.com> (http://benclinkinbeard.com/)",
   "license": "ISC",
-  "dependencies": {
-    "twit": "^2.2.9"
+  "bugs": {
+    "url": "https://github.com/bclinkinbeard/egghead-d3v4/issues"
   },
+  "homepage": "https://github.com/bclinkinbeard/egghead-d3v4#readme",
   "devDependencies": {
-    "bluebird": "^3.5.1",
-    "env": "0.0.2",
-    "node-int64": "^0.4.0",
-    "twit-promise": "^2.1.0"
+    "browser-sync": "^2.23.6"
   }
 }
