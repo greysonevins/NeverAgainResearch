@@ -159,6 +159,7 @@ def statesAmounts():
     State_Tweets_day3 = {key: State_Tweets_day3[key] / population for key, population in STATES_POPULATION.items()}
     State_Tweets_day4 = {key: State_Tweets_day4[key] / population for key, population in STATES_POPULATION.items()}
 
+
     with open("day1Tweets.json", "w") as total:
         json.dump(State_Tweets_day1, total)
 
