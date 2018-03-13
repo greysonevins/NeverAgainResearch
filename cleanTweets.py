@@ -33,7 +33,7 @@ STATES_POPULATION = {"Alabama": 4863300,"Alaska": 741894,"Arizona": 6931071,"Ark
 def cleanTweets():
     tweets = []
 
-    with open("cleanTweets.json", "r") as data:
+    with open("data/cleanTweets.json", "r") as data:
         tweets = json.load(data)
 
     usefulTweets = []
@@ -66,7 +66,7 @@ def cleanTweets():
             tweet["created_at"] = UTCFixTime(time)
             usefulTweets.append(tweet)
 
-    with open("usefulTweets.json", "w") as tw:
+    with open("data/usefulTweets.json", "w") as tw:
         json.dump(usefulTweets, tw)
 
     statesAmounts()
@@ -87,7 +87,7 @@ def statesAmounts():
 
     tweetsUsed = []
 
-    with open("usefulTweets.json", "r") as tw:
+    with open("data/usefulTweets.json", "r") as tw:
         tweetsUsed = json.load(tw)
 
     State_Tweets_day1 = {"Alabama": 0,"Alaska": 0,"Arizona": 0,"Arkansas": 0,"California": 0,"Colorado": 0,
@@ -154,21 +154,41 @@ def statesAmounts():
                 State_Tweets_day4[locationUsed]  = valuePast
 
 
-    State_Tweets_day1 = {key: State_Tweets_day1[key] / population for key, population in STATES_POPULATION.items()}
-    State_Tweets_day2 = {key: State_Tweets_day2[key] / population for key, population in STATES_POPULATION.items()}
-    State_Tweets_day3 = {key: State_Tweets_day3[key] / population for key, population in STATES_POPULATION.items()}
-    State_Tweets_day4 = {key: State_Tweets_day4[key] / population for key, population in STATES_POPULATION.items()}
+    State_Tweets_day1 = {key: ((State_Tweets_day1[key] / population) * 1000000 ) for key, population in STATES_POPULATION.items()}
+    State_Tweets_day2 = {key: ((State_Tweets_day2[key] / population) * 1000000 ) for key, population in STATES_POPULATION.items()}
+    State_Tweets_day3 = {key: ((State_Tweets_day3[key] / population) * 1000000 ) for key, population in STATES_POPULATION.items()}
+    State_Tweets_day4 = {key: ((State_Tweets_day4[key] / population) * 1000000 ) for key, population in STATES_POPULATION.items()}
 
-    with open("day1Tweets.json", "w") as total:
+    minMax = {
+                "minValue" : 1,
+                "maxValue" : 0
+            }
+
+    def getMaxandMin(item):
+        if item < minMax["minValue"]:
+            minMax["minValue"] = item
+        elif item > minMax["maxValue"]:
+            minMax["maxValue"] = item
+
+    for key, item in State_Tweets_day1.items():
+        getMaxandMin(item)
+
+    for key, item in State_Tweets_day4.items():
+        getMaxandMin(item)
+
+    with open("data/minMax.json", "w") as data:
+        json.dump(minMax, data)
+
+    with open("data/day1Tweets.json", "w") as total:
         json.dump(State_Tweets_day1, total)
 
-    with open("day2Tweets.json", "w") as total:
+    with open("data/day2Tweets.json", "w") as total:
         json.dump(State_Tweets_day2, total)
 
-    with open("day3Tweets.json", "w") as total:
+    with open("data/day3Tweets.json", "w") as total:
         json.dump(State_Tweets_day3, total)
 
-    with open("day4Tweets.json", "w") as total:
+    with open("data/day4Tweets.json", "w") as total:
         json.dump(State_Tweets_day4, total)
 
 

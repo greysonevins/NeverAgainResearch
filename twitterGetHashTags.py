@@ -36,7 +36,7 @@ def getTwitterData():
     global t
     last_used_file = open("lastused.txt", "r")
     discoveredTweets = []
-    with open('tweetsNAHash.json', 'r') as tweet_json:
+    with open('data/tweetsNAHash.json', 'r') as tweet_json:
         discoveredTweets = json.load(tweet_json)
 
 
@@ -49,11 +49,11 @@ def getTwitterData():
     newData = list(map(lambda t: cleanData(t), tweets))
     finalData = [t for t in newData if t is not None]
     list(map(lambda t: discoveredTweets.append(t), finalData))
-    with open('tweetsNAHash.json', 'w') as outfile:
+    with open('data/tweetsNAHash.json', 'w') as outfile:
         json.dump(discoveredTweets, outfile)
 
     newLast = tweets[-1].id - 1
-    last_used_file = open("lastused.txt", "w")
+    last_used_file = open("data/lastused.txt", "w")
     last_used_file.write(str(newLast))
     last_used_file.close()
     print(tweets[-1].created_at)
