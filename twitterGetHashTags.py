@@ -42,7 +42,8 @@ def getTwitterData():
 
     lastused = last_used_file.read()
     last_used_file.close()
-    params = {"q": "#neveragain since:2018-02-25", "result_type": "recent", "max_id": lastused, "count": "100"}
+    params = {"q": "#neveragain since:2018-02-25", "result_type": "recent",
+                    "max_id": lastused, "count": "100"}
     tweets = api.search(**params)
     if not tweets:
         t.cancel()

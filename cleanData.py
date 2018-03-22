@@ -59,6 +59,58 @@ STATES__VOTING_POPULATION = {
                     "Wisconsin": 4491015,
                     "Wyoming": 446600
                     }
+STATES_VOTING_SPECTRUM = {
+                    "Alabama": 0,
+                    "Alaska": 0,
+                    "Arizona": 0,
+                    "Arkansas": 0,
+                    "California": 0,
+                    "Colorado": 0,
+                    "Connecticut": 0,
+                    "Delaware": 0,
+                    "Florida": 0,
+                    "Georgia": 0,
+                    "Hawaii": 0,
+                    "Idaho": 0,
+                    "Illinois": 0,
+                    "Indiana": 0,
+                    "Iowa": 0,
+                    "Kansas": 0,
+                    "Kentucky": 0,
+                    "Louisiana": 0,
+                    "Maine": 0,
+                    "Maryland": 0,
+                    "Massachusetts": 0,
+                    "Michigan": 0,
+                    "Minnesota": 0,
+                    "Mississippi": 0,
+                    "Missouri": 0,
+                    "Montana": 0,
+                    "Nebraska": 0,
+                    "Nevada": 0,
+                    "New Hampshire": 0,
+                    "New Jersey": 0,
+                    "New Mexico": 0,
+                    "New York": 0,
+                    "North Carolina": 0,
+                    "North Dakota": 0,
+                    "Ohio": 0,
+                    "Oklahoma": 0,
+                    "Oregon": 0,
+                    "Pennsylvania": 0,
+                    "Rhode Island": 0,
+                    "South Carolina": 0,
+                    "South Dakota": 0,
+                    "Tennessee": 0,
+                    "Texas": 0,
+                    "Utah": 0,
+                    "Vermont": 0,
+                    "Virginia": 0,
+                    "Washington": 0,
+                    "West Virginia": 0,
+                    "Wisconsin": 0,
+                    "Wyoming": 0
+                    }
 # "Annual Estimates of the Resident Population for the United States, Regions,
 #   United States, and Puerto Rico: April 1, 2010 to July 1, 2016" (XLSX).
 #   Census Bureau. Retrieved 8 June 2017.
@@ -190,25 +242,35 @@ def engageTweets():
 
     with open("data/day1Tweets.json") as day1:
         dayNormTL = json.load(day1)
-        dayTotal = {key: population * dayNormTL[key] for key, population in STATES_POPULATION.items()}
+        dayTotal = {key: population * dayNormTL[key] for key,
+                        population in STATES_POPULATION.items()}
 
     with open("data/day2Tweets.json") as day2:
         day2Amounts = json.load(day2)
-        nonNormalized2 = {key: day2Amounts[key] *  population for key, population in STATES_POPULATION.items()}
-        dayNormTL = {key: day2Amounts[key] +  total for key, total in dayNormTL.items()}
-        dayTotal = {key: nonNormalized2[key] +  total for key, total in dayTotal.items()}
+        nonNormalized2 = {key: day2Amounts[key] *
+                    population for key, population in STATES_POPULATION.items()}
+        dayNormTL = {key: day2Amounts[key] +
+                        total for key, total in dayNormTL.items()}
+        dayTotal = {key: nonNormalized2[key] +
+                        total for key, total in dayTotal.items()}
 
     with open("data/day3Tweets.json") as day3:
         day3Amounts = json.load(day3)
-        nonNormalized3 = {key: day3Amounts[key] * population for key, population in STATES_POPULATION.items()}
-        dayNormTL = {key: day3Amounts[key] +  total for key, total in dayNormTL.items()}
-        dayTotal = {key: nonNormalized3[key] +  total for key, total in dayTotal.items()}
+        nonNormalized3 = {key: day3Amounts[key] *
+                    population for key, population in STATES_POPULATION.items()}
+        dayNormTL = {key: day3Amounts[key] +
+                                    total for key, total in dayNormTL.items()}
+        dayTotal = {key: nonNormalized3[key] +
+                                    total for key, total in dayTotal.items()}
 
     with open("data/day4Tweets.json") as day4:
         day4Amounts = json.load(day4)
-        nonNormalized4 = {key: day4Amounts[key] * population for key, population in STATES_POPULATION.items()}
-        dayNormTL = {key: day4Amounts[key] +  total for key, total in dayNormTL.items()}
-        dayTotal = {key: nonNormalized4[key] +  total for key, total in dayTotal.items()}
+        nonNormalized4 = {key: day4Amounts[key] * population for key,
+                                    population in STATES_POPULATION.items()}
+        dayNormTL = {key: day4Amounts[key] +
+                                    total for key, total in dayNormTL.items()}
+        dayTotal = {key: nonNormalized4[key] +
+                                    total for key, total in dayTotal.items()}
         dayNT = sorted(dayNormTL, key=dayNormTL.get, reverse=True)[:5]
         dayT = sorted(dayTotal, key=dayTotal.get, reverse=True)[:5]
 
@@ -369,13 +431,39 @@ def timesFix():
         #                 )
         counter += 1
         continue
+
+    ##This edit was made to help with R autocorrelation//Temporal Analysis
     states15N["Times"] = indexLoop15
     states30N["Times"] = indexLoop30
     states60N["Times"] = indexLoop60
+    newDict15 = {"Location": [], "Tweets": [], "Times": []}
+    newDict30 = {"Location": [], "Tweets": [], "Times": []}
+    newDict60 = {"Location": [], "Tweets": [], "Times": []}
 
-    tweets15 = DataFrame(states15N)
-    tweets30 = DataFrame(states30N)
-    tweets60 = DataFrame(states60N)
+    for keys, items in states15N.items():
+        if not keys == "Times":
+            for idx, location in enumerate(items):
+                newDict15["Location"].append(keys)
+                newDict15["Tweets"].append(location)
+                newDict15["Times"].append(states15N["Times"][idx])
+
+    for keys, items in states30N.items():
+        if not keys == "Times":
+            for idx, location in enumerate(items):
+                newDict30["Location"].append(keys)
+                newDict30["Tweets"].append(location)
+                newDict30["Times"].append(states30N["Times"][idx])
+
+    for keys, items in states60N.items():
+        if not keys == "Times":
+            for idx, location in enumerate(items):
+                newDict60["Location"].append(keys)
+                newDict60["Tweets"].append(location)
+                newDict60["Times"].append(states60N["Times"][idx])
+
+    tweets15 = DataFrame(newDict15)
+    tweets30 = DataFrame(newDict30)
+    tweets60 = DataFrame(newDict60)
 
     tweets15.to_csv("data/tweets15Days.csv")
     tweets30.to_csv("data/tweets30Days.csv")
@@ -392,7 +480,7 @@ def lengthOfTweets():
     with open("data/usefulTweets.json") as tw:
         tweetsUsed = json.load(tw)
 
-    tweetData = {"textLength": [], "location": [], "time": []}
+    tweetData = {"textLength": [], "location": [], "time": [], "politicsN":[]}
     for tweet in tweetsUsed:
         textUsed = tweet["text"]
         tweetTime = tweet["created_at"]
@@ -418,6 +506,7 @@ def lengthOfTweets():
         else:
             wordCount = len(wordsTry)
 
+        tweetData["politicsN"].append(STATES_VOTING_SPECTRUM[state])
         tweetData["textLength"].append(wordCount)
         tweetData["location"].append(state)
         tweetData["time"].append(tweetTime)
@@ -428,7 +517,7 @@ def lengthOfTweets():
 
 def votingRecords():
     # 2016 election results vs. frequency of tweets
-    global STATES_VOTER_RECORDS
+    global STATES_VOTER_RECORDS, STATES_VOTING_SPECTRUM
 
     changedRecord = {}
     totals = []
@@ -449,44 +538,57 @@ def votingRecords():
         changedRecord[key] = trumpOrClintonState
         totals.append(trumpOrClintonState)
         states.append(key)
-
-    STATES_VOTER_RECORDS = changedRecord
+    STATES_VOTING_SPECTRUM = changedRecord
+    # STATES_VOTER_RECORDS = changedRecord
     dayList = ["1", "2", "3", "4"]
     totalsData = {"votingRecord": totals,
-    "day1": [],
-    "day2": [],
-    "day3": [],
-    "day4": []
+    "tweetsPerHillaryVote": [0]*50,
+    "tweetsPerTrumpVote": [0]*50,
+    "totals": [],
+    "totalsNorm": []
     }
-    totalTweetsVPolitics = {"t"}
+    totals = [0] * 50
+    counter = 0
     for day in dayList:
-        dayFile = "data/day"+day+"Tweets.json"
+        dayFile = "data/day"+day+"TweetsTotal.json"
         dayName = "day"+day
         jsonDay = {}
         with open(dayFile) as fle:
             jsonDay = json.load(fle)
         for key, stTotal in jsonDay.items():
-            totalsData[dayName].append(stTotal)
+            totals[counter] += stTotal
+            counter +=1
+        counter = 0
+
+    counter = 0
+    totalsNorm = [0]*50
+    for state, tots in STATES_VOTER_RECORDS.items():
+        trumpV = STATES_VOTER_RECORDS[state]["Trump"]
+        clintonV = STATES_VOTER_RECORDS[state]["Clinton"]
+
+        tweetTotalsS = totals[counter]
+
+        tPT = ((tweetTotalsS  / trumpV) * 1000000)
+        tPC = ((tweetTotalsS/ clintonV) * 1000000)
+
+        totalsData["tweetsPerTrumpVote"][counter] = tPT
+        totalsData["tweetsPerHillaryVote"][counter] = tPC
+        totalsNorm[counter] = ((tweetTotalsS / STATES__VOTING_POPULATION[state])
+                                        * 1000000)
+        counter+= 1
+
+    totalsData["totals"] = totals
+    totalsData["totalsNorm"] = totalsNorm
 
     tweetDaysPolitics = DataFrame(totalsData, index=states)
 
     tweetDaysPolitics.to_csv("data/politicsOfTweets.csv")
 
 
-
-
-    # with open("")
-
-
-# def newCSV():
-#     print(NORMTOPFIVESTATES, TOPFIVESTATES)
-#
-#     ##Soem CSV
-    ##
 def main():
     engageTweets()
     votingRecords()
     timesFix()
-    # lengthOfTweets()
+    lengthOfTweets()
 
 main()

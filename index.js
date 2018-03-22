@@ -48,7 +48,10 @@ setInterval(function () {
   })
 
 
-  twit.get('search/tweets', { q:'#neveragain since:2018-02-18', count: 100, result_type: "recent", max_id: recentlyUsed}, function (err, data, response){
+  twit.get('search/tweets', { q:'#neveragain since:2018-02-18',
+            count: 100,
+            result_type: "recent",
+            max_id: recentlyUsed}, function (err, data, response){
     var cleanedTweets = data.statuses.map(cleanTweets)
     cleanedTweets.map(x => jsonData.push(x))
     jsonData = jsonData.filter(function(n){ return n != undefined})
