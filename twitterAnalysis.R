@@ -183,9 +183,26 @@ summary(lm(totalsNorm ~ votingRecord, data=Trump))
 
 ggplot(lengthData, aes(politicsN, textLength)) +
   geom_point(color =ifelse(lengthData$politicsN>0.0, "blue", "red"), size = 0.1) +
-  labs(x = 'Number of Words in Tweet', y= 'Political Leaning') +
+  labs(x = 'Political Leaning', y= 'Number of Words in Tweet') +
   ggtitle('Political Alligance vs. Length of Tweet')
+ggsave("twLengthByVote.png")
+
 
 
 #224  442 no -2SD
+
+
+my_ecdf <- ecdf(lengthData$textLength)
+
+df.ecdf <- data.frame(x = sort(lengthData$textLength),
+                y = my_ecdf(sort(lengthData$textLength) ))
+ggplot(data = df.ecdf, aes(x, y) ) +
+  geom_line() +
+  geom_point(color="blue") +
+  ggtitle('ECDF of # of Words Used') +
+  xlab('Length of Tweet in Words') +
+  ylab('Cumulative probability')
+
+ggsave("ecdfWords.png")
+
 ```
